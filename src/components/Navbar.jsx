@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiUser, FiShoppingBag, FiMenu, FiX, FiChevronDown } from 'react-icons/fi';
@@ -11,6 +11,8 @@ const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userDropdownRef = useRef(null);
   const { getCartCount, user, logout } = useCart();
   const location = useLocation();
 
@@ -23,7 +25,18 @@ const Navbar = () => {
   useEffect(() => {
     setMobileOpen(false);
     setSearchOpen(false);
+    setUserMenuOpen(false);
   }, [location]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (userDropdownRef.current && !userDropdownRef.current.contains(e.target)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const categories = [
     { name: 'Rings', path: '/shop?category=rings' },
@@ -97,16 +110,32 @@ const Navbar = () => {
             </motion.button>
 
             {user ? (
-              <div className="nav-dropdown user-dropdown">
-                <motion.button className="nav-icon-btn" whileTap={{ scale: 0.9 }}>
+              <div className="nav-dropdown user-dropdown" ref={userDropdownRef}>
+                <motion.button
+                  className="nav-icon-btn"
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                >
                   <FiUser size={19} />
                 </motion.button>
-                <div className="dropdown-menu user-menu">
-                  <span className="user-greeting">Hi, {user.name}</span>
-                  {user.role === 'admin' && <Link to="/admin" className="dropdown-item">Admin Panel</Link>}
-                  <Link to="/orders" className="dropdown-item">My Orders</Link>
-                  <button onClick={logout} className="dropdown-item logout-btn">Sign Out</button>
-                </div>
+                <AnimatePresence>
+                  {userMenuOpen && (
+                    <motion.div
+                      className="dropdown-menu user-menu"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <span className="user-greeting">Hi, {user.name}</span>
+                      {user.role === 'admin' && (
+                        <Link to="/admin" className="dropdown-item" onClick={() => setUserMenuOpen(false)}>Admin Panel</Link>
+                      )}
+                      <Link to="/orders" className="dropdown-item" onClick={() => setUserMenuOpen(false)}>My Orders</Link>
+                      <button onClick={() => { setUserMenuOpen(false); logout(); }} className="dropdown-item logout-btn">Sign Out</button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ) : (
               <Link to="/login">
