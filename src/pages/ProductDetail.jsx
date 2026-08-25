@@ -125,9 +125,9 @@ const ProductDetail = () => {
 
             <div className="detail-rating">
               {[...Array(5)].map((_, i) => (
-                <FiStar key={i} size={16} className={i < Math.round(product.rating) ? 'star-filled' : ''} />
+                <FiStar key={i} size={16} className={i < Math.round(product.rating || 4.5) ? 'star-filled' : ''} />
               ))}
-              <span>{product.rating} / 5</span>
+              <span>{(product.rating || 4.5).toFixed(1)} / 5</span>
             </div>
 
             <div className="detail-price-block">
