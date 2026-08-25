@@ -1,0 +1,345 @@
+.shop-hero {
+  background: var(--black);
+  padding: 160px 0 70px;
+  text-align: center;
+}
+
+.shop-hero h1 {
+  font-size: 2.8rem;
+  color: var(--white);
+  margin: 12px 0 14px;
+}
+
+.shop-hero p {
+  font-size: 0.95rem;
+  color: var(--gray);
+  font-weight: 300;
+}
+
+.shop-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.shop-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid var(--gray-light);
+  background: var(--white);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.filter-toggle:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.results-count {
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+
+.shop-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sort-select select {
+  padding: 10px 36px 10px 16px;
+  border: 1px solid var(--gray-light);
+  background: var(--white);
+  font-size: 0.8rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A8A8A' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.view-toggles {
+  display: flex;
+  gap: 4px;
+}
+
+.view-toggles button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--gray-light);
+  background: var(--white);
+  color: var(--gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-toggles button.active {
+  border-color: var(--black);
+  color: var(--black);
+}
+
+.shop-content {
+  display: flex;
+  gap: 40px;
+  padding: 40px 0 100px;
+  min-height: 60vh;
+}
+
+.shop-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.sidebar-header h3 {
+  font-size: 1.1rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+.sidebar-header button {
+  background: none;
+  color: var(--gray);
+}
+
+.filter-group {
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.filter-group h4 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--black);
+  margin-bottom: 16px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 0.85rem;
+  color: var(--gray);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-option:hover {
+  color: var(--black);
+}
+
+.filter-option input {
+  display: none;
+}
+
+.radio-custom {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--gray-light);
+  border-radius: 50%;
+  position: relative;
+  transition: var(--transition);
+}
+
+.filter-option input:checked + .radio-custom {
+  border-color: var(--gold);
+}
+
+.filter-option input:checked + .radio-custom::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+.price-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-inputs input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--gray-light);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.price-inputs span {
+  color: var(--gray);
+}
+
+.clear-filters {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--gray-light);
+  background: transparent;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.clear-filters:hover {
+  border-color: var(--ruby);
+  color: var(--ruby);
+}
+
+.products-container {
+  flex: 1;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.products-grid.list-view {
+  grid-template-columns: 1fr;
+}
+
+.products-grid.list-view .product-card {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 30px;
+}
+
+.products-grid.list-view .product-image {
+  aspect-ratio: 1;
+}
+
+.loading-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.skeleton-card {
+  background: var(--off-white);
+  padding: 20px;
+}
+
+.skeleton-image {
+  aspect-ratio: 4/5;
+  background: var(--gray-light);
+  margin-bottom: 16px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-text {
+  height: 16px;
+  background: var(--gray-light);
+  margin-bottom: 8px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-text.short {
+  width: 60%;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.no-products {
+  text-align: center;
+  padding: 100px 0;
+}
+
+.no-products h3 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.no-products p {
+  color: var(--gray);
+}
+
+@media (max-width: 1024px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .shop-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    background: var(--white);
+    z-index: 1001;
+    padding: 24px;
+    box-shadow: var(--shadow-dark);
+  }
+}
+
+@media (max-width: 768px) {
+  .shop-toolbar {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .shop-toolbar-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .loading-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .loading-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
