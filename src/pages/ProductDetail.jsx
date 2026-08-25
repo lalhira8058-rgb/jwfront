@@ -7,7 +7,7 @@ import { useCart } from '../context/CartContext';
 import ProductCard from '../components/ProductCard';
 import './ProductDetail.css';
 
-const API_URL = 'http://localhost:5000/api';
+import API_URL from '../config';
 
 const ProductDetail = () => {
   const { slug } = useParams();

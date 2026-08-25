@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import './Checkout.css';
 
-const API_URL = 'http://localhost:5000/api';
+import API_URL from '../config';
 
 const Checkout = () => {
   const { cart, getCartTotal, clearCart } = useCart();

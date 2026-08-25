@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import './Admin.css';
 
-const API_URL = 'http://localhost:5000/api';
+import API_URL from '../config';
 
 const Admin = () => {
   const { user, token, logout } = useCart();

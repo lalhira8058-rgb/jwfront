@@ -6,7 +6,7 @@ import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import './Shop.css';
 
-const API_URL = 'http://localhost:5000/api';
+import API_URL from '../config';
 
 const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
