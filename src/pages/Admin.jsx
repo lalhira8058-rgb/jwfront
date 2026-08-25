@@ -24,6 +24,9 @@ const Admin = () => {
   const [expandedCards, setExpandedCards] = useState({});
   const [profileForm, setProfileForm] = useState({ name: '', email: '', currentPassword: '', newPassword: '' });
   const [profileMsg, setProfileMsg] = useState('');
+  const [showAddUser, setShowAddUser] = useState(false);
+  const [newUser, setNewUser] = useState({ name: '', email: '', password: '', role: 'user' });
+  const [userMsg, setUserMsg] = useState('');
 
   const [productForm, setProductForm] = useState({
     name: '', slug: '', category: 'rings', price: '', originalPrice: '',
@@ -195,6 +198,32 @@ const Admin = () => {
       setProfileMsg('Profile updated successfully!');
     } catch (error) {
       setProfileMsg(error.response?.data?.message || 'Error updating profile');
+    }
+  };
+
+  const handleAddUser = async (e) => {
+    e.preventDefault();
+    setUserMsg('');
+    try {
+      await axios.post(`${API_URL}/admin/users`, newUser, { headers });
+      setNewUser({ name: '', email: '', password: '', role: 'user' });
+      setShowAddUser(false);
+      fetchUsers();
+      fetchDashboard();
+      setUserMsg('');
+    } catch (error) {
+      setUserMsg(error.response?.data?.message || 'Error creating user');
+    }
+  };
+
+  const handleDeleteUser = async (id) => {
+    if (!window.confirm('Delete this user?')) return;
+    try {
+      await axios.delete(`${API_URL}/admin/users/${id}`, { headers });
+      fetchUsers();
+      fetchDashboard();
+    } catch (error) {
+      alert(error.response?.data?.message || 'Error deleting user');
     }
   };
 
@@ -428,6 +457,38 @@ const Admin = () => {
         {/* Users */}
         {activeTab === 'users' && (
           <div className="admin-users">
+            <div className="admin-toolbar">
+              <button className="add-product-btn" onClick={() => setShowAddUser(!showAddUser)}>
+                <FiPlus size={16} /> {showAddUser ? 'Close' : 'Add User'}
+              </button>
+            </div>
+
+            {showAddUser && (
+              <form onSubmit={handleAddUser} className="settings-form" style={{ marginBottom: 20 }}>
+                <div className="form-group">
+                  <label>Name</label>
+                  <input type="text" value={newUser.name} onChange={e => setNewUser({ ...newUser, name: e.target.value })} required />
+                </div>
+                <div className="form-group">
+                  <label>Email</label>
+                  <input type="email" value={newUser.email} onChange={e => setNewUser({ ...newUser, email: e.target.value })} required />
+                </div>
+                <div className="form-group">
+                  <label>Password</label>
+                  <input type="password" value={newUser.password} onChange={e => setNewUser({ ...newUser, password: e.target.value })} required />
+                </div>
+                <div className="form-group">
+                  <label>Role</label>
+                  <select value={newUser.role} onChange={e => setNewUser({ ...newUser, role: e.target.value })}>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                {userMsg && <p className={userMsg.includes('Error') ? 'error-msg' : 'success-msg'}>{userMsg}</p>}
+                <button type="submit" className="add-product-btn">Create User</button>
+              </form>
+            )}
+
             <table className="admin-table">
               <thead>
                 <tr>
@@ -435,6 +496,7 @@ const Admin = () => {
                   <th>Email</th>
                   <th>Role</th>
                   <th>Joined</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -444,6 +506,15 @@ const Admin = () => {
                     <td>{u.email}</td>
                     <td><span className={`role-badge ${u.role}`}>{u.role}</span></td>
                     <td>{new Date(u.createdAt).toLocaleDateString()}</td>
+                    <td>
+                      <div className="action-btns">
+                        {u._id !== user.id && (
+                          <button className="action-btn delete" onClick={() => handleDeleteUser(u._id)}>
+                            <FiTrash2 size={14} />
+                          </button>
+                        )}
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
