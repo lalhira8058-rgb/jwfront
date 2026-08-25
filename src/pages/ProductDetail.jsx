@@ -255,12 +255,6 @@ const ProductDetail = () => {
             >
               Specifications
             </button>
-            <button
-              className={activeTab === 'reviews' ? 'active' : ''}
-              onClick={() => setActiveTab('reviews')}
-            >
-              Reviews ({product.reviews?.length || 0})
-            </button>
           </div>
 
           <AnimatePresence mode="wait">
@@ -295,27 +289,6 @@ const ProductDetail = () => {
                       {product.sku && <tr><td>SKU</td><td>{product.sku}</td></tr>}
                     </tbody>
                   </table>
-                </div>
-              )}
-              {activeTab === 'reviews' && (
-                <div className="tab-reviews">
-                  {product.reviews?.length > 0 ? (
-                    product.reviews.map((review, i) => (
-                      <div key={i} className="review-card">
-                        <div className="review-header">
-                          <strong>{review.user}</strong>
-                          <div className="review-stars">
-                            {[...Array(5)].map((_, j) => (
-                              <FiStar key={j} size={14} className={j < review.rating ? 'star-filled' : ''} />
-                            ))}
-                          </div>
-                        </div>
-                        <p>{review.comment}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="no-reviews">No reviews yet. Be the first to review this product!</p>
-                  )}
                 </div>
               )}
             </motion.div>

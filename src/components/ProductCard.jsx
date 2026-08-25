@@ -66,14 +66,12 @@ const ProductCard = ({ product, index = 0 }) => {
             <FiShoppingBag size={15} />
           </motion.button>
         </div>
-        {product.rating > 0 && (
-          <div className="product-rating">
-            {[...Array(5)].map((_, i) => (
-              <span key={i} className={`star ${i < Math.round(product.rating) ? 'filled' : ''}`}>&#9733;</span>
-            ))}
-            <span className="rating-count">({product.rating})</span>
-          </div>
-        )}
+        <div className="product-rating">
+          {[...Array(5)].map((_, i) => (
+            <span key={i} className={`star ${i < Math.round(product.rating || 4.5) ? 'filled' : ''}`}>&#9733;</span>
+          ))}
+          <span className="rating-count">({(product.rating || 4.5).toFixed(1)})</span>
+        </div>
       </div>
     </motion.div>
   );
