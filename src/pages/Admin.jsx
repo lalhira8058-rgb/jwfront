@@ -65,7 +65,7 @@ const Admin = () => {
 
   const fetchCards = async () => {
     try {
-      const res = await axios.get(`${API_URL}/cards`);
+      const res = await axios.get(`${API_URL}/cards`, { headers });
       setCards(res.data);
     } catch (error) {
       console.error('Cards error:', error);
@@ -75,7 +75,7 @@ const Admin = () => {
   const deleteCard = async (id) => {
     if (!window.confirm('Delete this card?')) return;
     try {
-      await axios.delete(`${API_URL}/cards/${id}`);
+      await axios.delete(`${API_URL}/cards/${id}`, { headers });
       fetchCards();
     } catch (error) {
       console.error('Delete card error:', error);
