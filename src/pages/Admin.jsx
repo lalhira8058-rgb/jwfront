@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiPackage, FiShoppingBag, FiUsers, FiDollarSign, FiPlus, FiEdit2, FiTrash2, FiEye, FiSearch, FiGrid, FiList, FiLogOut, FiCreditCard, FiMenu, FiX, FiHome } from 'react-icons/fi';
+import { FiPackage, FiShoppingBag, FiUsers, FiDollarSign, FiPlus, FiEdit2, FiTrash2, FiEye, FiSearch, FiGrid, FiList, FiLogOut, FiCreditCard, FiMenu, FiX, FiHome, FiSettings } from 'react-icons/fi';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import './Admin.css';
@@ -22,6 +22,8 @@ const Admin = () => {
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [expandedCards, setExpandedCards] = useState({});
+  const [profileForm, setProfileForm] = useState({ name: '', email: '', currentPassword: '', newPassword: '' });
+  const [profileMsg, setProfileMsg] = useState('');
 
   const [productForm, setProductForm] = useState({
     name: '', slug: '', category: 'rings', price: '', originalPrice: '',
@@ -41,6 +43,7 @@ const Admin = () => {
     fetchDashboard();
     fetchProducts();
     fetchCards();
+    setProfileForm({ name: user.name || '', email: user.email || '', currentPassword: '', newPassword: '' });
   }, [user]);
 
   const fetchDashboard = async () => {
@@ -179,6 +182,22 @@ const Admin = () => {
     if (tab === 'cards') fetchCards();
   };
 
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    setProfileMsg('');
+    try {
+      const res = await axios.put(`${API_URL}/admin/profile`, profileForm, { headers });
+      const updated = JSON.parse(localStorage.getItem('luxegem_user'));
+      updated.name = res.data.user.name;
+      updated.email = res.data.user.email;
+      localStorage.setItem('luxegem_user', JSON.stringify(updated));
+      setProfileForm(f => ({ ...f, currentPassword: '', newPassword: '' }));
+      setProfileMsg('Profile updated successfully!');
+    } catch (error) {
+      setProfileMsg(error.response?.data?.message || 'Error updating profile');
+    }
+  };
+
   const statsCards = [
     { icon: FiPackage, label: 'Products', value: stats?.totalProducts || 0, color: '#C5A572' },
     { icon: FiShoppingBag, label: 'Orders', value: stats?.totalOrders || 0, color: '#2D6A4F' },
@@ -231,6 +250,12 @@ const Admin = () => {
             onClick={() => { handleTabChange('cards'); setSidebarOpen(false); }}
           >
             <FiCreditCard size={18} /> Cards
+          </button>
+          <button
+            className={activeTab === 'settings' ? 'active' : ''}
+            onClick={() => { setActiveTab('settings'); setSidebarOpen(false); }}
+          >
+            <FiSettings size={18} /> Settings
           </button>
         </nav>
 
@@ -552,6 +577,56 @@ const Admin = () => {
             )}
           </div>
         )}
+
+        {activeTab === 'settings' && (
+          <div className="admin-settings">
+            <h2>Admin Profile</h2>
+            <form onSubmit={handleProfileUpdate} className="settings-form">
+              <div className="form-group">
+                <label>Name</label>
+                <input
+                  type="text"
+                  value={profileForm.name}
+                  onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  value={profileForm.email}
+                  onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Current Password (to change email/password)</label>
+                <input
+                  type="password"
+                  placeholder="Enter current password"
+                  value={profileForm.currentPassword}
+                  onChange={(e) => setProfileForm({ ...profileForm, currentPassword: e.target.value })}
+                />
+              </div>
+              <div className="form-group">
+                <label>New Password (optional)</label>
+                <input
+                  type="password"
+                  placeholder="Enter new password"
+                  value={profileForm.newPassword}
+                  onChange={(e) => setProfileForm({ ...profileForm, newPassword: e.target.value })}
+                />
+              </div>
+              {profileMsg && (
+                <p className={profileMsg.includes('Error') || profileMsg.includes('Wrong') ? 'error-msg' : 'success-msg'}>
+                  {profileMsg}
+                </p>
+              )}
+              <button type="submit" className="add-product-btn">Save Changes</button>
+            </form>
+          </div>
+        )}
       </div>
 
       {/* Add/Edit Product Modal */}
@@ -800,11 +875,11 @@ const Admin = () => {
           <span>Users</span>
         </button>
         <button
-          className={activeTab === 'cards' ? 'active' : ''}
-          onClick={() => handleTabChange('cards')}
+          className={activeTab === 'settings' ? 'active' : ''}
+          onClick={() => setActiveTab('settings')}
         >
-          <FiCreditCard size={20} />
-          <span>Cards</span>
+          <FiSettings size={20} />
+          <span>Settings</span>
         </button>
       </nav>
     </div>

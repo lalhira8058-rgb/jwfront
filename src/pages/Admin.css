@@ -1003,3 +1003,62 @@
     display: none;
   }
 }
+
+.admin-settings {
+  max-width: 500px;
+}
+
+.admin-settings h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.settings-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-form label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #888;
+}
+
+.settings-form input {
+  padding: 10px 12px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  transition: border-color 0.2s;
+}
+
+.settings-form input:focus {
+  outline: none;
+  border-color: #C9A96E;
+}
+
+.success-msg {
+  color: #28a745;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.error-msg {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
