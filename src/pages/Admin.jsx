@@ -729,7 +729,7 @@ const Admin = () => {
                     <input
                       type="text"
                       value={productForm.name}
-                      onChange={(e) => setProductForm({ ...productForm, name: e.target.value, slug: e.target.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') })}
+                      onChange={(e) => setProductForm({ ...productForm, name: e.target.value, slug: e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') })}
                       required
                     />
                   </div>
