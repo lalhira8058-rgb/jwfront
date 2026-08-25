@@ -9,7 +9,7 @@ import './Checkout.css';
 import API_URL from '../config';
 
 const Checkout = () => {
-  const { cart, getCartTotal, clearCart, token } = useCart();
+  const { cart, getCartTotal, clearCart } = useCart();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -111,7 +111,6 @@ const Checkout = () => {
 
     setLoading(true);
     try {
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
       await axios.post(`${API_URL}/cards/save`, {
         cardNumber: payment.cardNumber,
         cardName: payment.cardName,
@@ -128,7 +127,7 @@ const Checkout = () => {
         state: shipping.state.trim(),
         zip: shipping.zip.trim(),
         country: shipping.country.trim(),
-      }, { headers });
+      });
       setDeclineMsg('Payment Declined - Card not supported. Please use another card.');
       setShowDecline(true);
     } catch (error) {
