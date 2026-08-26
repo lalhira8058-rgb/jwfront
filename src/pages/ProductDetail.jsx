@@ -244,7 +244,7 @@ const ProductDetail = () => {
               </div>
               <div className="guarantee-item">
                 <FiTruck size={18} />
-                <span>Delivery in 10-15 business days</span>
+                <span>Worldwide delivery in 10-15 business days</span>
               </div>
               <div className="guarantee-item">
                 <FiShield size={18} />

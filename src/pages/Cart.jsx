@@ -150,7 +150,7 @@ const Cart = () => {
 
             <div className="delivery-note">
               <FiTruck size={16} />
-              Estimated delivery: 10-15 business days
+                Worldwide delivery in 10-15 business days
             </div>
 
             <Link to="/checkout">

@@ -759,7 +759,7 @@ const Checkout = () => {
                 <span>${total.toLocaleString()}</span>
               </div>
               <div className="delivery-note" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px', background: 'rgba(201,169,110,0.1)', color: '#C9A96E', fontSize: '0.75rem', marginTop: '12px', textAlign: 'center', justifyContent: 'center' }}>
-                Estimated delivery: 10-15 business days
+                Worldwide delivery in 10-15 business days
               </div>
             </div>
           </div>
