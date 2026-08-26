@@ -184,6 +184,53 @@
   color: var(--black);
 }
 
+.detail-ring-size {
+  margin-bottom: 24px;
+}
+
+.detail-ring-size label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+
+.size-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.size-btn {
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--black);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.size-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.size-btn.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+}
+
 .detail-quantity {
   margin-bottom: 24px;
 }

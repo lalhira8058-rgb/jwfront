@@ -234,6 +234,26 @@
   justify-content: center;
 }
 
+.delivery-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(201, 169, 110, 0.1);
+  color: var(--gold);
+  font-size: 0.8rem;
+  margin-bottom: 16px;
+  text-align: center;
+  justify-content: center;
+}
+
+.cart-item-size {
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
 .checkout-btn {
   width: 100%;
   padding: 18px;

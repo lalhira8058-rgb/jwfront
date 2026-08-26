@@ -384,6 +384,20 @@
   font-weight: 500;
 }
 
+.checkout-item-size {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.review-item-size {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--gold);
+  font-weight: 500;
+}
+
 .checkout-item-qty {
   font-size: 0.75rem;
   color: var(--gray);

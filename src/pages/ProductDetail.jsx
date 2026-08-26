@@ -18,6 +18,9 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('details');
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [selectedSize, setSelectedSize] = useState('');
+  const ringSizes = ['3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+  const isRing = product?.category === 'rings' || product?.category === 'engagement' || product?.category === 'wedding';
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -170,6 +173,23 @@ const ProductDetail = () => {
               )}
             </div>
 
+            {isRing && (
+              <div className="detail-ring-size">
+                <label>Ring Size *</label>
+                <div className="size-options">
+                  {ringSizes.map((size) => (
+                    <button
+                      key={size}
+                      className={`size-btn ${selectedSize === size ? 'active' : ''}`}
+                      onClick={() => setSelectedSize(size)}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="detail-quantity">
               <label>Quantity</label>
               <div className="quantity-control">
@@ -188,7 +208,10 @@ const ProductDetail = () => {
                 className="add-to-cart-main"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => addToCart(product, quantity)}
+                onClick={() => {
+                  if (isRing && !selectedSize) { alert('Please select a ring size'); return; }
+                  addToCart(product, quantity, isRing ? selectedSize : null);
+                }}
               >
                 <FiShoppingBag size={18} />
                 Add to Cart — ${(product.price * quantity).toLocaleString()}
@@ -198,7 +221,8 @@ const ProductDetail = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => {
-                  addToCart(product, quantity);
+                  if (isRing && !selectedSize) { alert('Please select a ring size'); return; }
+                  addToCart(product, quantity, isRing ? selectedSize : null);
                   navigate('/checkout');
                 }}
               >
@@ -216,7 +240,11 @@ const ProductDetail = () => {
             <div className="detail-guarantees">
               <div className="guarantee-item">
                 <FiTruck size={18} />
-                <span>Free shipping on orders over $500</span>
+                <span>Free shipping on orders over $50</span>
+              </div>
+              <div className="guarantee-item">
+                <FiTruck size={18} />
+                <span>Delivery in 10-15 business days</span>
               </div>
               <div className="guarantee-item">
                 <FiShield size={18} />

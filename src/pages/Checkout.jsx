@@ -9,7 +9,7 @@ import './Checkout.css';
 import API_URL from '../config';
 
 const Checkout = () => {
-  const { cart, getCartTotal, clearCart } = useCart();
+  const { cart, getCartTotal, getShipping, getGrandTotal, clearCart } = useCart();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -42,9 +42,8 @@ const Checkout = () => {
   const [errors, setErrors] = useState({});
 
   const subtotal = getCartTotal();
-  const shippingCost = subtotal >= 500 ? 0 : 25;
-  const tax = Math.round(subtotal * 0.08);
-  const total = subtotal + shippingCost + tax;
+  const shippingCost = getShipping();
+  const total = getGrandTotal();
 
   const validateShipping = () => {
     const newErrors = {};
@@ -705,6 +704,7 @@ const Checkout = () => {
                       <img src={item.images?.[0] || 'https://via.placeholder.com/60'} alt={item.name} />
                       <div className="review-item-info">
                         <span className="review-item-name">{item.name}</span>
+                        {item.ringSize && <span className="review-item-size">Size: {item.ringSize}</span>}
                         <span className="review-item-qty">Qty: {item.quantity}</span>
                       </div>
                       <span className="review-item-price">${(item.price * item.quantity).toLocaleString()}</span>
@@ -737,6 +737,7 @@ const Checkout = () => {
                   <img src={item.images?.[0] || 'https://via.placeholder.com/60'} alt={item.name} />
                   <div className="checkout-item-info">
                     <span className="checkout-item-name">{item.name}</span>
+                    {item.ringSize && <span className="checkout-item-size">Size: {item.ringSize}</span>}
                     <span className="checkout-item-qty">Qty: {item.quantity}</span>
                   </div>
                   <span className="checkout-item-price">${(item.price * item.quantity).toLocaleString()}</span>
@@ -752,14 +753,13 @@ const Checkout = () => {
                 <span>Shipping</span>
                 <span>{shippingCost === 0 ? 'FREE' : `$${shippingCost}`}</span>
               </div>
-              <div className="summary-row">
-                <span>Tax</span>
-                <span>${tax.toLocaleString()}</span>
-              </div>
               <div className="summary-divider" />
               <div className="summary-row total">
                 <span>Total</span>
                 <span>${total.toLocaleString()}</span>
+              </div>
+              <div className="delivery-note" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px', background: 'rgba(201,169,110,0.1)', color: '#C9A96E', fontSize: '0.75rem', marginTop: '12px', textAlign: 'center', justifyContent: 'center' }}>
+                Estimated delivery: 10-15 business days
               </div>
             </div>
           </div>

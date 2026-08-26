@@ -36,31 +36,40 @@ export const CartProvider = ({ children }) => {
     }
   }, [token, user]);
 
-  const addToCart = (product, quantity = 1) => {
+  const addToCart = (product, quantity = 1, ringSize = null) => {
     setCart((prev) => {
-      const existing = prev.find((item) => item._id === product._id);
+      const cartKey = ringSize ? `${product._id}-${ringSize}` : product._id;
+      const existing = prev.find((item) => {
+        const itemKey = item.ringSize ? `${item._id}-${item.ringSize}` : item._id;
+        return itemKey === cartKey;
+      });
       if (existing) {
-        return prev.map((item) =>
-          item._id === product._id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
+        return prev.map((item) => {
+          const itemKey = item.ringSize ? `${item._id}-${item.ringSize}` : item._id;
+          return itemKey === cartKey ? { ...item, quantity: item.quantity + quantity } : item;
+        });
       }
-      return [...prev, { ...product, quantity }];
+      return [...prev, { ...product, quantity, ringSize }];
     });
     showNotification(`${product.name} added to cart!`);
   };
 
-  const removeFromCart = (productId) => {
-    setCart((prev) => prev.filter((item) => item._id !== productId));
+  const removeFromCart = (productId, ringSize = null) => {
+    setCart((prev) => prev.filter((item) => {
+      const itemKey = item.ringSize ? `${item._id}-${item.ringSize}` : item._id;
+      const removeKey = ringSize ? `${productId}-${ringSize}` : productId;
+      return itemKey !== removeKey;
+    }));
   };
 
-  const updateQuantity = (productId, quantity) => {
-    if (quantity < 1) return removeFromCart(productId);
+  const updateQuantity = (productId, quantity, ringSize = null) => {
+    if (quantity < 1) return removeFromCart(productId, ringSize);
     setCart((prev) =>
-      prev.map((item) =>
-        item._id === productId ? { ...item, quantity } : item
-      )
+      prev.map((item) => {
+        const itemKey = item.ringSize ? `${item._id}-${item.ringSize}` : item._id;
+        const updateKey = ringSize ? `${productId}-${ringSize}` : productId;
+        return itemKey === updateKey ? { ...item, quantity } : item;
+      })
     );
   };
 
@@ -68,6 +77,10 @@ export const CartProvider = ({ children }) => {
 
   const getCartTotal = () =>
     cart.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  const getShipping = () => getCartTotal() >= 50 ? 0 : 9.99;
+
+  const getGrandTotal = () => getCartTotal() + getShipping();
 
   const getCartCount = () =>
     cart.reduce((count, item) => count + item.quantity, 0);
@@ -102,7 +115,7 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         cart, addToCart, removeFromCart, updateQuantity, clearCart,
-        getCartTotal, getCartCount, user, token, login, register, logout,
+        getCartTotal, getCartCount, getShipping, getGrandTotal, user, token, login, register, logout,
         notification,
       }}
     >

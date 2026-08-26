@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext';
 import './Cart.css';
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity, getCartTotal, clearCart } = useCart();
+  const { cart, removeFromCart, updateQuantity, getCartTotal, getShipping, getGrandTotal, clearCart } = useCart();
 
   if (cart.length === 0) {
     return (
@@ -36,9 +36,8 @@ const Cart = () => {
   }
 
   const subtotal = getCartTotal();
-  const shipping = subtotal >= 500 ? 0 : 25;
-  const tax = Math.round(subtotal * 0.08);
-  const total = subtotal + shipping + tax;
+  const shipping = getShipping();
+  const total = getGrandTotal();
 
   return (
     <div className="cart-page">
@@ -75,14 +74,15 @@ const Cart = () => {
                       <h3>{item.name}</h3>
                     </Link>
                     <p className="cart-item-meta">{item.material} • {item.gemstone}</p>
+                    {item.ringSize && <p className="cart-item-size">Ring Size: {item.ringSize}</p>}
                     <div className="cart-item-price">${item.price.toLocaleString()}</div>
                   </div>
                   <div className="cart-item-quantity">
-                    <button onClick={() => updateQuantity(item._id, item.quantity - 1)}>
+                    <button onClick={() => updateQuantity(item._id, item.quantity - 1, item.ringSize)}>
                       <FiMinus size={14} />
                     </button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item._id, item.quantity + 1)}>
+                    <button onClick={() => updateQuantity(item._id, item.quantity + 1, item.ringSize)}>
                       <FiPlus size={14} />
                     </button>
                   </div>
@@ -93,7 +93,7 @@ const Cart = () => {
                     className="cart-item-remove"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => removeFromCart(item._id)}
+                    onClick={() => removeFromCart(item._id, item.ringSize)}
                   >
                     <FiTrash2 size={16} />
                   </motion.button>
@@ -126,10 +126,6 @@ const Cart = () => {
               <span>Shipping</span>
               <span>{shipping === 0 ? 'FREE' : `$${shipping}`}</span>
             </div>
-            <div className="summary-row">
-              <span>Tax (8%)</span>
-              <span>${tax.toLocaleString()}</span>
-            </div>
 
             <div className="summary-divider" />
 
@@ -144,6 +140,18 @@ const Cart = () => {
                 You qualify for free shipping!
               </div>
             )}
+
+            {shipping > 0 && (
+              <div className="free-shipping-note" style={{ color: '#999' }}>
+                <FiTruck size={16} />
+                Add ${(50 - subtotal).toFixed(2)} more for free shipping
+              </div>
+            )}
+
+            <div className="delivery-note">
+              <FiTruck size={16} />
+              Estimated delivery: 10-15 business days
+            </div>
 
             <Link to="/checkout">
               <motion.button
