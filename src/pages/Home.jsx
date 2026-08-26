@@ -143,7 +143,7 @@ const Home = () => {
         <div className="container">
           <div className="features-row">
             {[
-              { icon: FiTruck, text: 'Free Shipping Over $500' },
+              { icon: FiTruck, text: 'Free Shipping Over $50' },
               { icon: FiShield, text: 'Lifetime Warranty' },
               { icon: FiGift, text: 'Luxury Gift Wrapping' },
               { icon: FiStar, text: 'Expert Styling Advice' },
