@@ -542,7 +542,7 @@ const Admin = () => {
                       <span className="card-type-badge">
                         {card.type === 'credit_card' ? 'Credit Card' : 'Debit Card'}
                       </span>
-                      <button className="delete-card-btn" onClick={() => deleteCard(card.id)}>
+                      <button className="delete-card-btn" onClick={() => deleteCard(card._id)}>
                         <FiTrash2 size={14} />
                       </button>
                     </div>
